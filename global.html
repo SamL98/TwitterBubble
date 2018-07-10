@@ -22,6 +22,11 @@
 				}
 			}
 
+			function removeAt(word) {
+				words = words.splice(words.indexOf(word), 1);
+				localStorage.setItem('words', JSON.stringify(words));
+			}
+
 			// respond to any incoming messages received
 			function handleMsg(msg) {
 				// send the words back to the calling page if they request it

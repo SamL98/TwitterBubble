@@ -22,7 +22,7 @@
 	<script>
 		// add a list item to the popover of a word that will be hidden
 	    function addWord(word) {
-		     $('#words').append('<li>'+word+'</li>');
+		    $('#words').append('<li>'+word+'</li>');
 	    }
 
 		// get the saved words from the global page
@@ -42,6 +42,29 @@
 			// only add the word if the user has actually put something
 			// into the text field
 			if (word && word !== "") {
+				if (word.startsWith('<del>')) {
+					var idx = parseInt(word.substring(5, word.length));
+					var wd = '';
+					if (idx < 0) { 
+						idx = words.length+idx; 
+						wd = words[idx];
+					}
+					else { 
+						idx = idx-1; 
+						wd = words[idx+1];
+					}
+
+					if (idx > words.length-1) {
+						console.log('invalid index');
+						return;
+					}
+
+					var li = document.getElementsByTagName('li')[idx];
+					li.parentNode.removeChild(li);
+
+					win.removeAt(wd);
+					return;
+				}
 
 				// add the word to local storage and display it
 				win.addWord(word);

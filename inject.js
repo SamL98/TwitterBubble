@@ -17,11 +17,16 @@ var hideWords = function(words) {
 		});
 
 		for (var j = 0; j < words.length; j++) {
+			var shdRemove = false;			
 
 			// remove the tweet node if any of the words to hide is
 			// contained in the words of the tweet
-			if (twWords.includes(words[j])) {
+			if (twWords.includes(words[j])) { shdRemove = true; }
 
+			if ((words[j].indexOf(' ') > 0) && 
+				(tweet.toLowerCase().indexOf(words[j]) > 0)) { shdRemove = true; }
+
+			if (shdRemove) {
 				// the actual node of the tweet is 5 levels up in the DOM
 				var child = tweetDivs[i];
 				var par = tweetDivs[i].parentNode;
