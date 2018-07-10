@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script>
+			// Load the array of words to hide from the browser's local storage
+			var words = [];
+			words = JSON.parse(localStorage.getItem("words"));
+			if (!words) {
+				words = [];
+			}
+
+			// getter function for words. don't want any outside script
+			// to actually access the words variable
+			function getWords() { return words; }
+
+			// add the given word to the list of words to hide
+			function addWord(word) {
+				// only add the word if it is not already in the list
+				if (words.indexOf(word) == -1) {
+					words.push(word);
+					localStorage.setItem("words", JSON.stringify(words));
+				}
+			}
+
+			// respond to any incoming messages received
+			function handleMsg(msg) {
+				// send the words back to the calling page if they request it
+				if (msg.name === 'GetWords') {
+					msg.target.page.dispatchMessage('Words', getWords());
+				}
+			}
+			safari.application.addEventListener("message", handleMsg, false);
+		</script>
+	</head>
+	<body></body>
+</html>
