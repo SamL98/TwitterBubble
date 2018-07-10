@@ -1,11 +1,3 @@
-// pause any videos on the screen because autoplay is fucking annoying
-var pauseVideos = function() {
-	var videos = document.getElementsByTagName('video');
-	for (var i = 0; i < videos.length; i++) {
-		videos[i].pause();
-	}
-}
-
 // Remove tweets containing any of the given words from the DOM
 var hideWords = function(words) {
 	// map the words to hide to lowercase, so hiding is case-insensitive
@@ -50,7 +42,6 @@ var wordsLoaded = false;
 // check to see if the DOM has been loaded every 100ms
 var interval = setInterval(() => {
 	if (document.readyState === 'complete') {
-		pauseVideos();
 	
 		// listen for the extension global page to respond to our
 		// dispatch with the words to hide
@@ -67,8 +58,9 @@ var interval = setInterval(() => {
 				hideWords(words);
 
 				var strCont = document.getElementById('stream-items-id');
+				if (!strCont) { return; }
+	
 				var observer = new MutationObserver((mList) => {
-					pauseVideos();
 					hideWords(words);
 				});
 				observer.observe(strCont, {childList: true});
